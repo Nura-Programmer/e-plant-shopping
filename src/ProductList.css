@@ -48,6 +48,22 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+.category {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.category h1 {
+    text-align: center;
+    min-width: min-content;
+    padding: 3px 20px;
+    border: 1px solid rgb(5, 4, 4);
+    border-left: none;
+    border-right: none;
+}
+
 .product-list {
     display: flex;
     flex-wrap: wrap;
