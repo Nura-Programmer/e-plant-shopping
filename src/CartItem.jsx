@@ -3,7 +3,7 @@ import { removeItem, updateQuantity } from "./CartSlice";
 import "./CartItem.css";
 
 const CartItem = ({ onContinueShopping }) => {
-  const cart = useSelector((state) => state.cart.items);
+  const { items: cart, itemsCounter } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
   // Calculate total amount for all products in the cart
@@ -40,7 +40,8 @@ const CartItem = ({ onContinueShopping }) => {
 
   const handleCheckoutShopping = (e) => {
     e.preventDefault();
-    alert("Functionality to be added for future reference");
+    if (itemsCounter) alert("Functionality to be added for future reference");
+    else alert("Your cart is empty, add some products to checkout.");
   };
 
   return (
