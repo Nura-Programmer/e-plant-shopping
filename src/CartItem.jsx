@@ -1,6 +1,5 @@
-import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addItem, removeItem, updateQuantity } from "./CartSlice";
+import { removeItem, updateQuantity } from "./CartSlice";
 import "./CartItem.css";
 
 const CartItem = ({ onContinueShopping }) => {
@@ -40,6 +39,7 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleCheckoutShopping = (e) => {
+    e.preventDefault();
     alert("Functionality to be added for future reference");
   };
 
