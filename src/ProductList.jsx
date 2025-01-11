@@ -4,21 +4,25 @@ import "./ProductList.css";
 import CartItem from "./CartItem";
 
 import plantsArray from "./assets/products";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "./CartSlice";
 
 function ProductList() {
+  const { itemsCounter, items } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const [showCart, setShowCart] = useState(false);
-  const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
-  const [addedToCart, setAddedToCart] = useState({});
+  // const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
 
   const handleAddToCart = (product) => {
     dispatch(addItem(product));
-    setAddedToCart((prevState) => ({
-      ...prevState,
-      [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
-    }));
+  };
+
+  const getItemsNames = () => {
+    return items.reduce((names, item) => [...names, item.name], []);
+  };
+
+  const isAdded = (name) => {
+    return getItemsNames().includes(name);
   };
 
   const handleCartClick = (e) => {
@@ -28,7 +32,7 @@ function ProductList() {
 
   const handlePlantsClick = (e) => {
     e.preventDefault();
-    setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
+    // setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
     setShowCart(false); // Hide the cart when navigating to About Us
   };
 
@@ -78,7 +82,6 @@ function ProductList() {
                   height="68"
                   width="68"
                 >
-                  <rect width="156" height="156" fill="none"></rect>
                   <circle cx="80" cy="216" r="12"></circle>
                   <circle cx="184" cy="216" r="12"></circle>
                   <path
@@ -90,6 +93,14 @@ function ProductList() {
                     strokeWidth="2"
                     id="mainIconPathAttribute"
                   ></path>
+                  {itemsCounter > 0 && (
+                    <>
+                      <circle cx="170" cy="90" r="70" fill="red"></circle>
+                      <text x="115" y="125" fill="white" fontSize={100}>
+                        {itemsCounter}
+                      </text>
+                    </>
+                  )}
                 </svg>
               </h1>
             </a>
@@ -112,12 +123,15 @@ function ProductList() {
                       <div className="product-price">{cost}</div>
                       <div className="product-description">{description}</div>
                       <button
-                        className="product-button"
+                        className={`product-button ${
+                          isAdded(name) && "added-to-cart"
+                        }`}
                         onClick={() =>
                           handleAddToCart({ name, image, description, cost })
                         }
+                        disabled={isAdded(name)}
                       >
-                        Add to Cart
+                        {isAdded(name) ? "Added to Cart" : "Add to Cart"}
                       </button>
                     </div>
                   )

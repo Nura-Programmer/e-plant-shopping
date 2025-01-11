@@ -1,9 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const countItems = (items) =>
+  items.reduce((counter, { quantity }) => (counter += quantity), 0);
+
 export const CartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: [], // Initialize items as an empty array
+    items: [], // Initialize items as an empty array,
+    itemsCounter: 0,
   },
   reducers: {
     addItem: (state, action) => {
@@ -14,15 +18,18 @@ export const CartSlice = createSlice({
       } else {
         state.items.push({ name, image, cost, quantity: 1 });
       }
+      state.itemsCounter = countItems(state.items);
     },
     removeItem: (state, action) => {
       state.items = state.items.filter((item) => item.name !== action.payload);
+      state.itemsCounter = countItems(state.items);
     },
     updateQuantity: (state, action) => {
       const { name, quantity } = action.payload;
       const itemToUpdate = state.items.find((item) => item.name === name);
       if (itemToUpdate) {
         itemToUpdate.quantity = quantity;
+        state.itemsCounter = countItems(state.items);
       }
     },
   },
